@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+
 use Closure;
 use App\Models\Shop;
 use Illuminate\Http\Request;
@@ -18,39 +19,42 @@ class CheckUserHasThisShop
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $message = $this->validaterequest($request);
+        if (!$message['status']) {
+            return response()->json([
+                'message' =>  $message['message']
+            ]);
+        }
 
-
-        $validatorid = Validator::make(
-            $request->all(),
-            [
-                'shopId' => 'required |exists:shop,shopId',
-            ]
-
-        );
-        $CheckUserHasThisShopById = shop::where('ownerId', Auth::id())->where('shopId', '=', $request->shopId)->first();
-
-        $CheckUserHasThisShop = Shop::where('ownerId', Auth::id())->where('nameOfStore', '=', $request->nameOfStore)->first();
+        $CheckUserHasThisShopById = Shop::withTrashed()->where('ownerId', Auth::id())->where('shopId', '=', $request->shopId)->first();
         if ($CheckUserHasThisShopById) {
-            if ($validatorid->fails()) {
-                return response()->json([
-
-                    'message' => $validatorid->errors()
-                ]);
-            }
-            // return $CheckUserHasThisShop;
             return $next($request);
         }
-
-
-
-        if ($CheckUserHasThisShop) {
-            return $next($request);
-        }
-
 
         return response()->json([
 
-            'message' => 'This shop does not For You'
+            'message' =>  $message['message']
         ]);
+    }
+    private function validaterequest($request)
+    {
+        $validatorid = Validator::make(
+            $request->all(),
+            [
+                'shopId' => 'required|integer|exists:shop,shopId',
+            ]
+        );
+        if ($validatorid->fails()) {
+            return   [
+
+                'message' => $validatorid->errors(),
+                'status' => 0
+            ];
+        }
+        return   [
+
+            'message' => 'This shop does not For You',
+            'status' => 1
+        ];
     }
 }

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('storeLocation');
             $table->unsignedBigInteger('ownerId');
             $table->foreign('ownerId')->references('id')->on('users');
-
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

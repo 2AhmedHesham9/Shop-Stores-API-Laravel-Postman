@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Models\User;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Shop  extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'shop';
     protected $primaryKey = 'shopId';
     protected $fillable = [
@@ -24,10 +25,10 @@ class Shop  extends Model
     ];
     public function owner()
     {
-        return $this->belongsTo(User::class, 'ownerId',);
+        return $this->belongsTo(User::class, 'ownerId');
     }
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'shopproduct', 'shopId', 'productId')->withTimestamps();
+        return $this->hasMany(Product::class,  'shopId', 'shopId') ;
     }
 }

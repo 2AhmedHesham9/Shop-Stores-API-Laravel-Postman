@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'product';
     protected $primaryKey = 'productId';
     protected $fillable = [
@@ -15,14 +16,14 @@ class Product extends Model
         'name',
         'price',
         'amount',
-        'shopname',
+        'shopId',
     ];
     public function shops()
     {
-        return $this->belongsToMany(Shop::class, 'shopproduct', 'productId', 'shopId')->withTimestamps();
+        return $this->belongsTo(Shop::class,   'shopId');
     }
     public function orders()
     {
-        return $this->belongsToMany(Order::class, 'order_product', 'product_id', 'order_id')->withPivot('quantity','created_at','updated_at')->as('order_product');
+        return $this->belongsToMany(Order::class, 'order_product', 'product_id', 'order_id')->withPivot('quantity', 'created_at', 'updated_at')->as('order_product');
     }
 }

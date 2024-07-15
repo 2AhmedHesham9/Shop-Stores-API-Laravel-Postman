@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password')->nullable(false);
             $table->string('clientPhoneNumber')->nullable(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

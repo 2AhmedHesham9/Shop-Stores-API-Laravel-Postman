@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoice extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $primaryKey = 'invoiceId';
     protected $table = 'invoice';
 
@@ -19,6 +20,6 @@ class Invoice extends Model
 
     public function order()
     {
-        return $this->hasOne(Order::class,'order_id','invoiceId');
+        return $this->hasOne(Order::class, 'order_id', 'invoiceId');
     }
 }

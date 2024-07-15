@@ -16,6 +16,7 @@
                 $table->unsignedBigInteger('clientId');
                 $table->foreign('clientId')->references('clientId')->on('client');
                 $table->timestamps();
+                $table->softDeletes();
             });
         }
 

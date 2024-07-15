@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('name')->isNotEmpty();
             $table->float('price')->isNotEmpty();
             $table->integer('amount')->isNotEmpty();
-            $table->string('shopname')->isNotEmpty();
+            $table->unsignedBigInteger('shopId');
+            $table->foreign('shopId')->references('shopId')->on('shop');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -15,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.user' => \App\Http\Middleware\CheckUserAuthentication::class,
             'auth.admin' => \App\Http\Middleware\CheckAdminAuthentication::class,
-            'auth.owner.has.shop' => \App\Http\Middleware\CheckUserHasThisShop::class,
+            'auth.owner.has.shopById' => \App\Http\Middleware\CheckUserHasThisShop::class,
+            'auth.owner.has.shopByName' => \App\Http\Middleware\CheckShopOwnerByStoreName::class,
             'auth.client' => \App\Http\Middleware\CheckClientAuth::class,
         ]);
     })

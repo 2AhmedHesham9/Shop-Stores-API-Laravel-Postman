@@ -19,6 +19,7 @@ return new class extends Migration
             $table->float('invoiceTotal');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

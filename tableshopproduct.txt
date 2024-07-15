@@ -1,0 +1,9 @@
+        Schema::create('shopproduct', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('shopId');
+            $table->unsignedBigInteger('productId');
+            $table->foreign('shopId')->references('shopId')->on('shop');
+            $table->foreign('productId')->references('productId')->on('product');
+            $table->timestamps();
+            $table->softDeletes();
+        });
